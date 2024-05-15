@@ -25,4 +25,16 @@ public class DepartamantoModel {
     public int getNumero() {
         return numero;
     }
+
+    public List<PersonaModel> getPersonaModels() {
+        return personaModels;
+    }
+
+    public List<Integer> getEstacionamiento() {
+        return estacionamiento;
+    }
+
+    public List<VehiculoModel> getVehiculoModels() {
+        return vehiculoModels;
+    }
 }

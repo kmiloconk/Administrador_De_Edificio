@@ -14,7 +14,7 @@ public class PersonaModel {
     }
 
     public void setNombre(String nombre) {
-        nombre = nombre;
+        this.nombre = nombre;
     }
 
     public String getNombre() {
@@ -22,7 +22,7 @@ public class PersonaModel {
     }
 
     public void setApellido(String apellido) {
-        npellido = apellido;
+        this.apellido = apellido;
     }
 
     public String getApellido() {
@@ -30,7 +30,7 @@ public class PersonaModel {
     }
 
     public void setTelefono(Integer telefono) {
-        telefono = telefono;
+        this.telefono = telefono;
     }
 
     public Integer getTelefono() {
@@ -38,7 +38,7 @@ public class PersonaModel {
     }
 
     public void setDescripcion(String descripcion) {
-        descripcion = descripcion;
+        this.descripcion = descripcion;
     }
 
     public String getDescripcion() {
