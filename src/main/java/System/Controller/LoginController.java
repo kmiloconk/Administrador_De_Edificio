@@ -1,2 +1,4 @@
-package System.Controller;public class LoginController {
+package System.Controller;
+
+public class LoginController {
 }
