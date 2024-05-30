@@ -1,8 +1,17 @@
 package System.View;
 
+import System.Controller.DepartamentoController;
+import System.Models.DepartamantoModel;
+import System.Models.PersonaModel;
+import System.Models.VehiculoModel;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
 
 public class Editar extends JFrame{
     private JPanel Ventana;
@@ -102,15 +111,6 @@ public class Editar extends JFrame{
     private JTextField marcaVTF9;
     private JTextField modeloVTF9;
     private JTextField colorVTF9;
-    private JPanel estacioPanel1;
-    private JPanel estacioPanel2;
-    private JPanel estacioPanel3;
-    private JPanel estacioPanel4;
-    private JPanel estacioPanel5;
-    private JPanel estacioPanel6;
-    private JPanel estacioPanel7;
-    private JPanel estacioPanel8;
-    private JPanel estacioPanel9;
     private JTextField numeroETF1;
     private JTextField numeroETF2;
     private JTextField numeroETF3;
@@ -121,12 +121,28 @@ public class Editar extends JFrame{
     private JTextField numeroETF8;
     private JTextField numeroETF9;
 
-    public Editar(){
+    List<JPanel> personaPanels = Arrays.asList(personaPanel, personaPanel1, personaPanel2, personaPanel3, personaPanel4, personaPanel5, personaPanel6, personaPanel7, personaPanel8, personaPanel9);
+    List<JTextField> nombrePTFs = Arrays.asList(nombrePTF, nombrePTF1, nombrePTF2, nombrePTF3, nombrePTF4, nombrePTF5, nombrePTF6, nombrePTF7, nombrePTF8, nombrePTF9);
+    List<JTextField> apellidoPTFs = Arrays.asList(apellidoPTF, apellidoPTF1, apellidoPTF2, apellidoPTF3, apellidoPTF4, apellidoPTF5, apellidoPTF6, apellidoPTF7, apellidoPTF8, apellidoPTF9);
+    List<JTextField> telefonoPTFs = Arrays.asList(telefonoPTF, telefonoPTF1, telefonoPTF2, telefonoPTF3, telefonoPTF4, telefonoPTF5, telefonoPTF6, telefonoPTF7, telefonoPTF8, telefonoPTF9);
+    List<JTextField> descripPTFs = Arrays.asList(descripPTF, descripPTF1, descripPTF2, descripPTF3, descripPTF4, descripPTF5, descripPTF6, descripPTF7, descripPTF8, descripPTF9);
+    List<JPanel> vehiculoPanels = Arrays.asList(vehiculoPanel, vehiculoPanel1, vehiculoPanel2, vehiculoPanel3, vehiculoPanel4, vehiculoPanel5, vehiculoPanel6, vehiculoPanel7, vehiculoPanel8, vehiculoPanel9);
+
+    List<JTextField> marcaVTFs = Arrays.asList(marcaVTF, marcaVTF1, marcaVTF2, marcaVTF3, marcaVTF4, marcaVTF5, marcaVTF6, marcaVTF7, marcaVTF8, marcaVTF9);
+
+    List<JTextField> modeloVTFs = Arrays.asList(modeloVTF, modeloVTF1, modeloVTF2, modeloVTF3, modeloVTF4, modeloVTF5, modeloVTF6, modeloVTF7, modeloVTF8, modeloVTF9);
+
+    List<JTextField> colorVTFs = Arrays.asList(colorVTF, colorVTF1, colorVTF2, colorVTF3, colorVTF4, colorVTF5, colorVTF6, colorVTF7, colorVTF8, colorVTF9);
+
+    List<JTextField> numeroETFs = Arrays.asList(numeroETF, numeroETF1, numeroETF2, numeroETF3, numeroETF4, numeroETF5, numeroETF6, numeroETF7, numeroETF8, numeroETF9);
+    Integer personaCant=0,vehiculoCant =0;
+    public Editar(DepartamentoController departamentoController){
         add(Ventana);
         setTitle("Editar");
         setSize(1000, 500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
+
 
         volverButton.addActionListener(new ActionListener() {
             @Override
@@ -135,7 +151,7 @@ public class Editar extends JFrame{
                 SwingUtilities.invokeLater(new Runnable() {
                     @Override
                     public void run() {
-                        PantallaPrincipal pantallaPrincipal = new PantallaPrincipal();
+                        PantallaPrincipal pantallaPrincipal = new PantallaPrincipal(departamentoController);
                         pantallaPrincipal.setVisible(true);
                         pantallaPrincipal.setExtendedState(JFrame.MAXIMIZED_BOTH);
                     }
@@ -145,16 +161,128 @@ public class Editar extends JFrame{
         Guardar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                dispose();
-                SwingUtilities.invokeLater(new Runnable() {
-                    @Override
-                    public void run() {
-                        setVisible(false);
-                        personaPanel1.setVisible(true);
-                        setVisible(true);
+                try {
+                    String numeroDeptoStr = numeroDeDeptoTextField.getText();
+
+                    if (numeroDeptoStr.isEmpty()) {
+                        JOptionPane.showMessageDialog(null, "Por favor, ingrese un número de departamento", "Error", JOptionPane.ERROR_MESSAGE);
+                        return;
                     }
-                });
+
+                    Integer numero;
+                    try {
+                        numero = Integer.parseInt(numeroDeptoStr);
+                    } catch (NumberFormatException ex) {
+                        JOptionPane.showMessageDialog(null, "El número de departamento debe ser un número válido", "Error", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+
+                    DepartamantoModel departamento = departamentoController.BuscarDepartamento(numero);
+                    if (departamento == null) {
+                        JOptionPane.showMessageDialog(null, "El departamento no existe", "Error", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+
+
+                    String nombre, apellido, descripcion, marca, modelo, color;
+                    Integer telefono, estacionamiento;
+                    List<PersonaModel> newPersonas = new ArrayList<>();
+
+                    for (int i = 0; i <= personaCant - 1; i++) {
+                        nombre = nombrePTFs.get(i).getText();
+                        apellido = apellidoPTFs.get(i).getText();
+                        String telefonoStr = telefonoPTFs.get(i).getText();
+                        descripcion = descripPTFs.get(i).getText();
+
+
+                        if (!telefonoStr.matches("\\d+")) {
+                            JOptionPane.showMessageDialog(null, "El teléfono debe ser un número válido", "Error", JOptionPane.ERROR_MESSAGE);
+                            return;
+                        }
+
+                        telefono = Integer.parseInt(telefonoStr);
+                        PersonaModel persona = new PersonaModel(nombre, apellido, telefono, descripcion);
+                        newPersonas.add(persona);
+                    }
+                    departamentoController.UpdatePersona(newPersonas, numero);
+
+                    List<VehiculoModel> newvehiculos = new ArrayList<>();
+
+                    for (int i = 0; i <= vehiculoCant - 1; i++) {
+                        String estacionamientoStr = numeroETFs.get(i).getText();
+                        marca = marcaVTFs.get(i).getText();
+                        modelo = modeloVTFs.get(i).getText();
+                        color = colorVTFs.get(i).getText();
+
+
+                        if (!estacionamientoStr.matches("\\d+")) {
+                            JOptionPane.showMessageDialog(null, "El estacionamiento debe ser un número válido", "Error", JOptionPane.ERROR_MESSAGE);
+                            return;
+                        }
+
+                        estacionamiento = Integer.parseInt(estacionamientoStr);
+                        VehiculoModel vehiculoModel = new VehiculoModel(estacionamiento, marca, modelo, color);
+                        newvehiculos.add(vehiculoModel);
+                    }
+                    departamentoController.UpdateVehiculo(newvehiculos, numero);
+                    JOptionPane.showMessageDialog(Ventana, "Los cambios han sido guardados");
+
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
             }
+        });
+        buscarBotton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String numeroDeptoStr = numeroDeDeptoTextField.getText();
+
+                if (numeroDeptoStr.isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Por favor, ingrese un número de departamento", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                Integer numero;
+                try {
+                    numero = Integer.parseInt(numeroDeptoStr);
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(null, "El número de departamento debe ser un número válido", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                DepartamantoModel departamento = departamentoController.BuscarDepartamento(numero);
+                if (departamento == null) {
+                    JOptionPane.showMessageDialog(null, "El departamento no existe", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                personaCant = 0;
+                vehiculoCant = 0;
+
+                for (PersonaModel persona : departamento.getPersonaModels()) {
+                    if (personaCant < personaPanels.size()) {
+                        personaPanels.get(personaCant).setVisible(true);
+                        nombrePTFs.get(personaCant).setText(persona.getNombre());
+                        apellidoPTFs.get(personaCant).setText(persona.getApellido());
+                        telefonoPTFs.get(personaCant).setText(persona.getTelefono().toString());
+                        descripPTFs.get(personaCant).setText(persona.getDescripcion());
+                    }
+                    personaCant++;
+                }
+
+                for (VehiculoModel vehiculo : departamento.getVehiculoModels()) {
+                    if (vehiculoCant < vehiculoPanels.size()) {
+                        vehiculoPanels.get(vehiculoCant).setVisible(true);
+                        numeroETFs.get(vehiculoCant).setText(vehiculo.getEstacionamiento().toString());
+                        marcaVTFs.get(vehiculoCant).setText(vehiculo.getMarca());
+                        modeloVTFs.get(vehiculoCant).setText(vehiculo.getModelo());
+                        colorVTFs.get(vehiculoCant).setText(vehiculo.getColor());
+                    }
+                    vehiculoCant++;
+                }
+
+            }
+
         });
 
     }

@@ -1,8 +1,16 @@
 package System.View;
 
+import System.Controller.DepartamentoController;
+import System.Models.DepartamantoModel;
+import System.Models.PersonaModel;
+import System.Models.VehiculoModel;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class Eliminar extends JFrame{
     private JTextField numeroDeDeptoTextField;
@@ -48,17 +56,6 @@ public class Eliminar extends JFrame{
     private JTextField marcaVTF8;
     private JPanel vehiculoPanel9;
     private JTextField marcaVTF9;
-    private JPanel estacioPanel;
-    private JTextField numeroETF;
-    private JPanel estacioPanel1;
-    private JPanel estacioPanel2;
-    private JPanel estacioPanel3;
-    private JPanel estacioPanel4;
-    private JPanel estacioPanel5;
-    private JPanel estacioPanel6;
-    private JPanel estacioPanel7;
-    private JPanel estacioPanel8;
-    private JPanel estacioPanel9;
     private JPanel Ventana;
     private JButton eliminarButton;
     private JButton eliminarButton1;
@@ -80,17 +77,18 @@ public class Eliminar extends JFrame{
     private JButton eliminarButton17;
     private JButton eliminarButton18;
     private JButton eliminarButton19;
-    private JButton eliminarButton20;
-    private JButton eliminarButton21;
-    private JButton eliminarButton22;
-    private JButton eliminarButton23;
-    private JButton eliminarButton24;
-    private JButton eliminarButton25;
-    private JButton eliminarButton26;
-    private JButton eliminarButton27;
-    private JButton eliminarButton28;
-    private JButton eliminarButton29;
-    public Eliminar(){
+    private JButton eliminarTodoButton;
+    Integer telefono,telefono1,telefono2,telefono3,telefono4,telefono5,telefono6,telefono7,telefono8,telefono9;
+    Integer estacinamiento,estacinamiento1,estacinamiento2,estacinamiento3,estacinamiento4,estacinamiento5,estacinamiento6,estacinamiento7,estacinamiento8,estacinamiento9;
+    List<JPanel> personaPanels = Arrays.asList(personaPanel, personaPanel1, personaPanel2, personaPanel3, personaPanel4, personaPanel5, personaPanel6, personaPanel7, personaPanel8, personaPanel9);
+    List<JTextField> nombrePTFs = Arrays.asList(nombrePTF, nombrePTF1, nombrePTF2, nombrePTF3, nombrePTF4, nombrePTF5, nombrePTF6, nombrePTF7, nombrePTF8, nombrePTF9);
+    List<JPanel> vehiculoPanels = Arrays.asList(vehiculoPanel, vehiculoPanel1, vehiculoPanel2, vehiculoPanel3, vehiculoPanel4, vehiculoPanel5, vehiculoPanel6, vehiculoPanel7, vehiculoPanel8, vehiculoPanel9);
+    List<JTextField> marcaVTFs = Arrays.asList(marcaVTF, marcaVTF1, marcaVTF2, marcaVTF3, marcaVTF4, marcaVTF5, marcaVTF6, marcaVTF7, marcaVTF8, marcaVTF9);
+    List<Integer> telefonos= Arrays.asList(telefono,telefono1,telefono2,telefono3,telefono4,telefono5,telefono6,telefono7,telefono8,telefono9);
+    List<Integer> estacionamientos= Arrays.asList(estacinamiento,estacinamiento1,estacinamiento2,estacinamiento3,estacinamiento4,estacinamiento5,estacinamiento6,estacinamiento7,estacinamiento8,estacinamiento9);
+    Integer personaCant=0,vehiculoCant =0;
+
+    public Eliminar(DepartamentoController departamentoController){
         add(Ventana);
         setTitle("Editar");
         setSize(1000, 500);
@@ -103,11 +101,257 @@ public class Eliminar extends JFrame{
                 SwingUtilities.invokeLater(new Runnable() {
                     @Override
                     public void run() {
-                        PantallaPrincipal pantallaPrincipal = new PantallaPrincipal();
+                        PantallaPrincipal pantallaPrincipal = new PantallaPrincipal(departamentoController);
                         pantallaPrincipal.setVisible(true);
                         pantallaPrincipal.setExtendedState(JFrame.MAXIMIZED_BOTH);
                     }
                 });
+            }
+        });
+
+        buscarBotton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                personaCant = 0;
+                vehiculoCant = 0;
+                Integer numero = Integer.parseInt(numeroDeDeptoTextField.getText());
+                DepartamantoModel departamento = departamentoController.BuscarDepartamento(numero);
+
+                if (departamento == null) {
+                    JOptionPane.showMessageDialog(null, "El departamento no existe", "Error", JOptionPane.ERROR_MESSAGE);
+                } else {
+                    for (PersonaModel persona : departamento.getPersonaModels()) {
+                        if (personaCant < personaPanels.size()) {
+                            personaPanels.get(personaCant).setVisible(true);
+                            telefonos.set(personaCant, persona.getTelefono());
+
+                            nombrePTFs.get(personaCant).setText(persona.getNombre() + "," + persona.getApellido() + "," + persona.getTelefono().toString() + "," + persona.getDescripcion());
+                        }
+                        personaCant++;
+                    }
+                    for (VehiculoModel vehiculo : departamento.getVehiculoModels()) {
+                        if (vehiculoCant < vehiculoPanels.size()) {
+                            vehiculoPanels.get(vehiculoCant).setVisible(true);
+                            estacionamientos.set(vehiculoCant, vehiculo.getEstacionamiento());
+                            marcaVTFs.get(vehiculoCant).setText(vehiculo.getMarca() + "," + vehiculo.getModelo() + "," + vehiculo.getColor() + "," + vehiculo.getEstacionamiento());
+                        }
+                        vehiculoCant++;
+                    }
+                }
+            }
+        });
+
+        eliminarButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Integer numeroDepto = Integer.parseInt(numeroDeDeptoTextField.getText());
+                telefono = telefonos.get(0);
+                departamentoController.DeletePersona(telefono, numeroDepto);
+                personaPanels.get(0).setVisible(false);
+                JOptionPane.showMessageDialog(Ventana,"Persona Eliminada");
+            }
+        });
+        eliminarButton1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Integer numeroDepto = Integer.parseInt(numeroDeDeptoTextField.getText());
+                telefono1 = telefonos.get(1);
+                departamentoController.DeletePersona(telefono1, numeroDepto);
+                personaPanels.get(1).setVisible(false);
+                JOptionPane.showMessageDialog(Ventana,"Persona Eliminada");
+            }
+        });
+        eliminarButton2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Integer numeroDepto = Integer.parseInt(numeroDeDeptoTextField.getText());
+                telefono2 = telefonos.get(2);
+                departamentoController.DeletePersona(telefono2, numeroDepto);
+                personaPanels.get(2).setVisible(false);
+                JOptionPane.showMessageDialog(Ventana,"Persona Eliminada");
+            }
+        });
+        eliminarButton3.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Integer numeroDepto = Integer.parseInt(numeroDeDeptoTextField.getText());
+                telefono3 = telefonos.get(3);
+                departamentoController.DeletePersona(telefono3, numeroDepto);
+                personaPanels.get(3).setVisible(false);
+                JOptionPane.showMessageDialog(Ventana,"Persona Eliminada");
+            }
+        });
+        eliminarButton4.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Integer numeroDepto = Integer.parseInt(numeroDeDeptoTextField.getText());
+                telefono4 = telefonos.get(4);
+                departamentoController.DeletePersona(telefono4, numeroDepto);
+                personaPanels.get(4).setVisible(false);
+                JOptionPane.showMessageDialog(Ventana,"Persona Eliminada");
+            }
+        });
+        eliminarButton5.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Integer numeroDepto = Integer.parseInt(numeroDeDeptoTextField.getText());
+                telefono5 = telefonos.get(5);
+                departamentoController.DeletePersona(telefono5, numeroDepto);
+                personaPanels.get(5).setVisible(false);
+                JOptionPane.showMessageDialog(Ventana,"Persona Eliminada");
+            }
+        });
+        eliminarButton6.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Integer numeroDepto = Integer.parseInt(numeroDeDeptoTextField.getText());
+                telefono6 = telefonos.get(6);
+                departamentoController.DeletePersona(telefono6, numeroDepto);
+                personaPanels.get(6).setVisible(false);
+                JOptionPane.showMessageDialog(Ventana,"Persona Eliminada");
+            }
+        });
+        eliminarButton7.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Integer numeroDepto = Integer.parseInt(numeroDeDeptoTextField.getText());
+                telefono7 = telefonos.get(7);
+                departamentoController.DeletePersona(telefono7, numeroDepto);
+                personaPanels.get(7).setVisible(false);
+                JOptionPane.showMessageDialog(Ventana,"Persona Eliminada");
+            }
+        });
+        eliminarButton8.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Integer numeroDepto = Integer.parseInt(numeroDeDeptoTextField.getText());
+                telefono8 = telefonos.get(8);
+                departamentoController.DeletePersona(telefono8, numeroDepto);
+                personaPanels.get(8).setVisible(false);
+                JOptionPane.showMessageDialog(Ventana,"Persona Eliminada");
+            }
+        });
+        eliminarButton9.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Integer numeroDepto = Integer.parseInt(numeroDeDeptoTextField.getText());
+                telefono9 = telefonos.get(9);
+                departamentoController.DeletePersona(telefono9, numeroDepto);
+                personaPanels.get(9).setVisible(false);
+                JOptionPane.showMessageDialog(Ventana,"Persona Eliminada");
+            }
+        });
+        eliminarButton10.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Integer numeroDepto = Integer.parseInt(numeroDeDeptoTextField.getText());
+                estacinamiento = estacionamientos.get(0);
+                departamentoController.DeleteVehiculo(estacinamiento, numeroDepto);
+                JOptionPane.showMessageDialog(Ventana,"Vehiculo Eliminado");
+                vehiculoPanels.get(0).setVisible(false);
+                System.out.println(estacinamiento);
+            }
+        });
+        eliminarButton11.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Integer numeroDepto = Integer.parseInt(numeroDeDeptoTextField.getText());
+                estacinamiento1 = estacionamientos.get(1);
+                departamentoController.DeleteVehiculo(estacinamiento1, numeroDepto);
+                vehiculoPanels.get(1).setVisible(false);
+                JOptionPane.showMessageDialog(Ventana,"Vehiculo Eliminado");
+            }
+        });
+        eliminarButton12.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Integer numeroDepto = Integer.parseInt(numeroDeDeptoTextField.getText());
+                estacinamiento2 = estacionamientos.get(2);
+                departamentoController.DeleteVehiculo(estacinamiento2, numeroDepto);
+                vehiculoPanels.get(2).setVisible(false);
+                JOptionPane.showMessageDialog(Ventana,"Vehiculo Eliminado");
+            }
+        });
+        eliminarButton13.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Integer numeroDepto = Integer.parseInt(numeroDeDeptoTextField.getText());
+                estacinamiento3 = estacionamientos.get(3);
+                departamentoController.DeleteVehiculo(estacinamiento3, numeroDepto);
+                vehiculoPanels.get(3).setVisible(false);
+                JOptionPane.showMessageDialog(Ventana,"Vehiculo Eliminado");
+            }
+        });
+        eliminarButton14.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Integer numeroDepto = Integer.parseInt(numeroDeDeptoTextField.getText());
+                estacinamiento4 = estacionamientos.get(4);
+                departamentoController.DeleteVehiculo(estacinamiento4, numeroDepto);
+                vehiculoPanels.get(4).setVisible(false);
+                JOptionPane.showMessageDialog(Ventana,"Vehiculo Eliminado");
+            }
+        });
+        eliminarButton15.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Integer numeroDepto = Integer.parseInt(numeroDeDeptoTextField.getText());
+                estacinamiento5 = estacionamientos.get(5);
+                departamentoController.DeleteVehiculo(estacinamiento5, numeroDepto);
+                vehiculoPanels.get(5).setVisible(false);
+                JOptionPane.showMessageDialog(Ventana,"Vehiculo Eliminado");
+            }
+        });
+        eliminarButton16.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Integer numeroDepto = Integer.parseInt(numeroDeDeptoTextField.getText());
+                estacinamiento6 = estacionamientos.get(6);
+                departamentoController.DeleteVehiculo(estacinamiento6, numeroDepto);
+                vehiculoPanels.get(6).setVisible(false);
+                JOptionPane.showMessageDialog(Ventana,"Vehiculo Eliminado");
+            }
+        });
+        eliminarButton17.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Integer numeroDepto = Integer.parseInt(numeroDeDeptoTextField.getText());
+                estacinamiento7 = estacionamientos.get(7);
+                departamentoController.DeleteVehiculo(estacinamiento7, numeroDepto);
+                vehiculoPanels.get(7).setVisible(false);
+                JOptionPane.showMessageDialog(Ventana,"Vehiculo Eliminado");
+            }
+        });
+        eliminarButton18.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Integer numeroDepto = Integer.parseInt(numeroDeDeptoTextField.getText());
+                estacinamiento8 = estacionamientos.get(8);
+                departamentoController.DeleteVehiculo(estacinamiento8, numeroDepto);
+                vehiculoPanels.get(8).setVisible(false);
+                JOptionPane.showMessageDialog(Ventana,"Vehiculo Eliminado");
+            }
+        });
+        eliminarButton19.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Integer numeroDepto = Integer.parseInt(numeroDeDeptoTextField.getText());
+                estacinamiento9 = estacionamientos.get(9);
+                departamentoController.DeleteVehiculo(estacinamiento9, numeroDepto);
+                vehiculoPanels.get(9).setVisible(false);
+                JOptionPane.showMessageDialog(Ventana,"Vehiculo Eliminado");
+            }
+        });
+        eliminarTodoButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Integer numeroDepto = Integer.parseInt(numeroDeDeptoTextField.getText());
+                departamentoController.DeleteDepartamento(numeroDepto);
+                JOptionPane.showMessageDialog(Ventana,"Departamento Eliminado");
+                setVisible(false);
+                PantallaPrincipal pantallaPrincipal = new PantallaPrincipal(departamentoController);
+                pantallaPrincipal.setVisible(true);
+                pantallaPrincipal.setExtendedState(JFrame.MAXIMIZED_BOTH);
             }
         });
     }
