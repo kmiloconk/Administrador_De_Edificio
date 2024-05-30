@@ -6,6 +6,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class PantallaPrincipal extends JFrame {
     private JPanel Ventana;
@@ -29,6 +31,16 @@ public class PantallaPrincipal extends JFrame {
         Image newImage=image.getScaledInstance(60, 50, Image.SCALE_SMOOTH);
         ImageIcon imageIcon1 = new ImageIcon(newImage);
         label.setIcon(imageIcon1);
+        textField1.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                // Verifica si la tecla presionada es Enter
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    // Simula el clic en el botón de búsqueda
+                    Buscar.doClick();
+                }
+            }
+        });
         AgregarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

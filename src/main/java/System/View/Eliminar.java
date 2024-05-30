@@ -125,7 +125,7 @@ public class Eliminar extends JFrame{
                             personaPanels.get(personaCant).setVisible(true);
                             telefonos.set(personaCant, persona.getTelefono());
 
-                            nombrePTFs.get(personaCant).setText(persona.getNombre() + "," + persona.getApellido() + "," + persona.getTelefono().toString() + "," + persona.getDescripcion());
+                            nombrePTFs.get(personaCant).setText(persona.getNombre() + "," + persona.getApellido() + "," + persona.getTelefono().toString() +","+persona.getEmail() +"," + persona.getDescripcion());
                         }
                         personaCant++;
                     }

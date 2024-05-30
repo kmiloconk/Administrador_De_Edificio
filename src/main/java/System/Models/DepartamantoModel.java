@@ -18,7 +18,7 @@ public class DepartamantoModel {
             this.numeroDepto = numeroDepto;
     }
 
-    public int getNumeroDepto() {
+    public Integer getNumeroDepto() {
         return numeroDepto;
     }
 

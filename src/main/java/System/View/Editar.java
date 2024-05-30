@@ -195,13 +195,14 @@ public class Editar extends JFrame{
                         descripcion = descripPTFs.get(i).getText();
 
 
+
                         if (!telefonoStr.matches("\\d+")) {
                             JOptionPane.showMessageDialog(null, "El teléfono debe ser un número válido", "Error", JOptionPane.ERROR_MESSAGE);
                             return;
                         }
 
                         telefono = Integer.parseInt(telefonoStr);
-                        PersonaModel persona = new PersonaModel(nombre, apellido, telefono, descripcion);
+                        PersonaModel persona = new PersonaModel(nombre, apellido, telefono, descripcion,"Arrendatario");
                         newPersonas.add(persona);
                     }
                     departamentoController.UpdatePersona(newPersonas, numero);
@@ -265,7 +266,7 @@ public class Editar extends JFrame{
                         nombrePTFs.get(personaCant).setText(persona.getNombre());
                         apellidoPTFs.get(personaCant).setText(persona.getApellido());
                         telefonoPTFs.get(personaCant).setText(persona.getTelefono().toString());
-                        descripPTFs.get(personaCant).setText(persona.getDescripcion());
+                        descripPTFs.get(personaCant).setText(persona.getEmail());
                     }
                     personaCant++;
                 }

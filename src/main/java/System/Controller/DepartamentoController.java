@@ -13,12 +13,12 @@ public class DepartamentoController {
     }
 
     public void GenerarEjemplo(){
-        PersonaModel persona1 = new PersonaModel("Juan", "Perez", 123456789, "Propietario");
-        PersonaModel persona2 = new PersonaModel("María", "López", 987654321, "Arrendatario");
-        PersonaModel persona3 = new PersonaModel("Pedro", "García", 456789123, "Propietario");
-        PersonaModel persona4 = new PersonaModel("Ana", "Martínez", 789123456, "Arrendatario");
-        PersonaModel persona5 = new PersonaModel("Luis", "Hernández", 321654987, "Propietario");
-        PersonaModel persona6 = new PersonaModel("Laura", "González", 654987321, "Arrendatario");
+        PersonaModel persona1 = new PersonaModel("Juan", "Perez", 123456789,"email@ejemplo.com", "Propietario");
+        PersonaModel persona2 = new PersonaModel("María", "López", 987654321,"email@ejemplo.com", "Arrendatario");
+        PersonaModel persona3 = new PersonaModel("Pedro", "García", 456789123,"email@ejemplo.com", "Propietario");
+        PersonaModel persona4 = new PersonaModel("Ana", "Martínez", 789123456,"email@ejemplo.com", "Arrendatario");
+        PersonaModel persona5 = new PersonaModel("Luis", "Hernández", 321654987,"email@ejemplo.com", "Propietario");
+        PersonaModel persona6 = new PersonaModel("Laura", "González", 654987321,"email@ejemplo.com", "Arrendatario");
 
         VehiculoModel vehiculo1 = new VehiculoModel(1,"Toyota", "Corolla", "Blanco");
         VehiculoModel vehiculo2 = new VehiculoModel(2,"Ford", "Fiesta", "Azul");
@@ -45,10 +45,10 @@ public class DepartamentoController {
 
         departamento1.getPersonaModels().add(persona1);
         departamento2.getPersonaModels().add(persona2);
-        departamento3.getPersonaModels().add(persona3);
+        departamento3.getPersonaModels().add(persona6);
         departamento4.getPersonaModels().add(persona4);
         departamento5.getPersonaModels().add(persona5);
-        departamento5.getPersonaModels().add(persona6);
+        departamento5.getPersonaModels().add(persona3);
 
         departamento1.getVehiculoModels().add(vehiculo1);
         departamento1.getVehiculoModels().add(vehiculo2);
@@ -77,8 +77,8 @@ public class DepartamentoController {
         return tablaModel;
     }
 
-    public void CreatePersona(String nombre, String apellido,Integer telefono,String descripcion, Integer numeroDepto){
-        PersonaModel personaModel = new PersonaModel(nombre,apellido,telefono,descripcion);
+    public void CreatePersona(String nombre, String apellido,Integer telefono,String email,String descripcion, Integer numeroDepto){
+        PersonaModel personaModel = new PersonaModel(nombre,apellido,telefono,email,descripcion);
 
         for (DepartamantoModel departamento : departamentoModels) {
             if (Objects.equals(departamento.getNumeroDepto(), numeroDepto)) {

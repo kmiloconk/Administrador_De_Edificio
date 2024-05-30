@@ -13,7 +13,7 @@ public class Agregar extends JFrame{
     private JTextField nombreTF;
     private JTextField apellidoTF;
     private JTextField telefonoTF;
-    private JTextField descripcionTF;
+    private JTextField emailTF;
     private JButton agregarPersonaButton;
     private JTextField marcaTF;
     private JTextField modeloTF;
@@ -50,10 +50,12 @@ public class Agregar extends JFrame{
                 String nombre = nombreTF.getText();
                 String apellido = apellidoTF.getText();
                 String telefonoStr = telefonoTF.getText();
-                String descripcion = descripcionTF.getText();
+                String email = emailTF.getText();
+                String descripcion = (String) comboBox1.getSelectedItem();
                 String numeroDeptoStr = numeroDeDeptoTextField.getText();
+                System.out.println(descripcion);
 
-                if (nombre.isEmpty() || apellido.isEmpty() || telefonoStr.isEmpty() || descripcion.isEmpty() || numeroDeptoStr.isEmpty()) {
+                if (nombre.isEmpty() || apellido.isEmpty() || telefonoStr.isEmpty() || numeroDeptoStr.isEmpty() || email.isEmpty()) {
                     JOptionPane.showMessageDialog(Ventana, "Todos los campos son obligatorios", "Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
@@ -70,13 +72,13 @@ public class Agregar extends JFrame{
                         }
                         departamentoController.CreateDepartamento(numeroDepto);
                         Integer telefono = Integer.parseInt(telefonoStr);
-                        departamentoController.CreatePersona(nombre, apellido, telefono, descripcion, numeroDepto);
+                        departamentoController.CreatePersona(nombre, apellido, telefono, email,descripcion, numeroDepto);
                         JOptionPane.showMessageDialog(Ventana, "Persona agregada");
 
                         nombreTF.setText("");
                         apellidoTF.setText("");
                         telefonoTF.setText("");
-                        descripcionTF.setText("");
+                        emailTF.setText("");
                         numeroDeDeptoTextField.setText("");
 
                         return;
@@ -100,13 +102,13 @@ public class Agregar extends JFrame{
 
                 Integer telefono = Integer.parseInt(telefonoStr);
                 Integer numeroDepto = Integer.parseInt(numeroDeptoStr);
-                departamentoController.CreatePersona(nombre, apellido, telefono, descripcion, numeroDepto);
+                departamentoController.CreatePersona(nombre, apellido, telefono, email,descripcion,numeroDepto);
                 JOptionPane.showMessageDialog(Ventana, "Persona agregada");
 
                 nombreTF.setText("");
                 apellidoTF.setText("");
                 telefonoTF.setText("");
-                descripcionTF.setText("");
+                emailTF.setText("");
                 numeroDeDeptoTextField.setText("");
             }
         });
