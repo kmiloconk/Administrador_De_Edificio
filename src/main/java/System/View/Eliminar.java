@@ -345,13 +345,19 @@ public class Eliminar extends JFrame{
         eliminarTodoButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Integer numeroDepto = Integer.parseInt(numeroDeDeptoTextField.getText());
-                departamentoController.DeleteDepartamento(numeroDepto);
-                JOptionPane.showMessageDialog(Ventana,"Departamento Eliminado");
-                setVisible(false);
-                PantallaPrincipal pantallaPrincipal = new PantallaPrincipal(departamentoController);
-                pantallaPrincipal.setVisible(true);
-                pantallaPrincipal.setExtendedState(JFrame.MAXIMIZED_BOTH);
+                int option = JOptionPane.showConfirmDialog(null,"¿Seguro que desea eliminar todo el departamento?","Adevertencia",JOptionPane.OK_CANCEL_OPTION,
+                        JOptionPane.WARNING_MESSAGE);
+
+                if (option == JOptionPane.OK_OPTION) {
+                    Integer numeroDepto = Integer.parseInt(numeroDeDeptoTextField.getText());
+                    departamentoController.DeleteDepartamento(numeroDepto);
+                    JOptionPane.showMessageDialog(Ventana,"Departamento Eliminado");
+                    setVisible(false);
+                    PantallaPrincipal pantallaPrincipal = new PantallaPrincipal(departamentoController);
+                    pantallaPrincipal.setVisible(true);
+                    pantallaPrincipal.setExtendedState(JFrame.MAXIMIZED_BOTH);
+                }
+
             }
         });
     }

@@ -3,6 +3,9 @@ package System.View;
 import System.Controller.DepartamentoController;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumn;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,6 +21,11 @@ public class PantallaPrincipal extends JFrame {
     private JButton EliminarButton;
     private JTable table1;
     private JLabel label;
+    private JButton Exportarbutton;
+    private JButton UsiarioButton;
+    private JButton OpcionesButton;
+    private JPanel OptionPanel;
+    private JButton resetButton;
 
     public PantallaPrincipal( DepartamentoController departamentoController){
         table1.setModel(departamentoController.tablaModelGenerator(departamentoController.getDepartamentoModels()));
@@ -99,11 +107,59 @@ public class PantallaPrincipal extends JFrame {
                         table1.setModel(departamentoController.tablaModelGenerator(departamentoController.BuscarDeptosString(dato)));
                     }
                 }
+                adjustColumnWidths(table1);
+                centerTableText(table1);
 
             }
         });
 
+        OpcionesButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(OptionPanel.isVisible()){
+                    OptionPanel.setVisible(false);
+                }else{
+                    OptionPanel.setVisible(true);
+                }
+
+            }
+        });
+        adjustColumnWidths(table1);
+        centerTableText(table1);
+
+
+    }
+
+
+    private void adjustColumnWidths(JTable table) {
+        for (int column = 0; column < table.getColumnCount(); column++) {
+            TableColumn tableColumn = table.getColumnModel().getColumn(column);
+            int preferredWidth = tableColumn.getMinWidth();
+            int maxWidth = tableColumn.getMaxWidth();
+
+            for (int row = 0; row < table.getRowCount(); row++) {
+                TableCellRenderer cellRenderer = table.getCellRenderer(row, column);
+                Component c = table.prepareRenderer(cellRenderer, row, column);
+                int width = c.getPreferredSize().width + table.getIntercellSpacing().width;
+                preferredWidth = Math.max(preferredWidth, width);
+
+                if (preferredWidth >= maxWidth) {
+                    preferredWidth = maxWidth;
+                    break;
+                }
+            }
+
+            tableColumn.setPreferredWidth(preferredWidth);
+        }
+    }
+    private void centerTableText(JTable table) {
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+        for (int column = 0; column < table.getColumnCount(); column++) {
+            table.getColumnModel().getColumn(column).setCellRenderer(centerRenderer);
+        }
     }
 
 
 }
+

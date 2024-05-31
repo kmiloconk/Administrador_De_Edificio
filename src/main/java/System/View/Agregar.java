@@ -53,7 +53,7 @@ public class Agregar extends JFrame{
                 String email = emailTF.getText();
                 String descripcion = (String) comboBox1.getSelectedItem();
                 String numeroDeptoStr = numeroDeDeptoTextField.getText();
-                System.out.println(descripcion);
+
 
                 if (nombre.isEmpty() || apellido.isEmpty() || telefonoStr.isEmpty() || numeroDeptoStr.isEmpty() || email.isEmpty()) {
                     JOptionPane.showMessageDialog(Ventana, "Todos los campos son obligatorios", "Error", JOptionPane.ERROR_MESSAGE);
@@ -121,6 +121,27 @@ public class Agregar extends JFrame{
                 try {
                     Integer numeroDepto = Integer.parseInt(validarDepto);
                     DepartamantoModel departamento = departamentoController.BuscarDepartamento(numeroDepto);
+                    if (departamento == null){
+                        departamentoController.CreateDepartamento(numeroDepto);
+                        String estacioStr = estacioTF.getText();
+                        String marca = marcaTF.getText();
+                        String modelo = modeloTF.getText();
+                        String color = colorTF.getText();
+
+
+                        try {
+                            Integer estacionamiento = Integer.parseInt(estacioStr);
+                            departamentoController.CreateVehiculo(estacionamiento, marca, modelo, color, numeroDepto);
+                            JOptionPane.showMessageDialog(Ventana, "Vehículo agregado");
+
+                            marcaTF.setText("");
+                            modeloTF.setText("");
+                            colorTF.setText("");
+                            estacioTF.setText("");
+                        } catch (NumberFormatException ex) {
+                            JOptionPane.showMessageDialog(Ventana, "El estacionamiento debe ser un número válido", "Error", JOptionPane.ERROR_MESSAGE);
+                        }
+                    }
 
                     if (departamento.getVehiculoModels().size() >= 10) {
                         JOptionPane.showMessageDialog(Ventana, "El departamento ya tiene el máximo de 10 vehículos", "Error", JOptionPane.ERROR_MESSAGE);

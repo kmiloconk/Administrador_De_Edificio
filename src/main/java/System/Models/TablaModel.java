@@ -8,7 +8,7 @@ import java.util.List;
 
 public class TablaModel extends AbstractTableModel {
     private final List<RowData> rowDataList = new ArrayList<>();
-    private final String[] columnNames = {"Número Departamento", "Propietario", "Arrendatario", "Vehículo", "Estacionamiento"};
+    private final String[] columnNames = {"Departamento", "Propietario", "Arrendatario", "Vehículo", "Estacionamiento"};
     private int currentDepartmentNumber = -1;
 
     public TablaModel(List<DepartamantoModel> departamentos) {
