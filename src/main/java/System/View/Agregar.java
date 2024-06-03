@@ -22,6 +22,7 @@ public class Agregar extends JFrame{
     private JButton agregarVehiculoButton;
     private JButton volverButton;
     private JComboBox comboBox1;
+    private JTextField letraTF;
 
     public Agregar(DepartamentoController departamentoController){
         add(Ventana);
@@ -53,34 +54,23 @@ public class Agregar extends JFrame{
                 String email = emailTF.getText();
                 String descripcion = (String) comboBox1.getSelectedItem();
                 String numeroDeptoStr = numeroDeDeptoTextField.getText();
+                String letraDepto = letraTF.getText();
 
 
                 if (nombre.isEmpty() || apellido.isEmpty() || telefonoStr.isEmpty() || numeroDeptoStr.isEmpty() || email.isEmpty()) {
                     JOptionPane.showMessageDialog(Ventana, "Todos los campos son obligatorios", "Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
+                if(letraDepto.isEmpty()){
+                    JOptionPane.showMessageDialog(Ventana, "El departamento debe tener una letra", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
 
                 try {
                     Integer numeroDepto = Integer.parseInt(numeroDeptoStr);
-                    DepartamantoModel departamento = departamentoController.BuscarDepartamento(numeroDepto);
+                    DepartamantoModel departamento = departamentoController.BuscarDepartamento(letraDepto,numeroDepto);
                     if (departamento == null) {
-                        try {
-                            Integer telefono = Integer.parseInt(telefonoStr);
-                        } catch (NumberFormatException ex) {
-                            JOptionPane.showMessageDialog(Ventana, "El teléfono debe ser un número válido", "Error", JOptionPane.ERROR_MESSAGE);
-                            return;
-                        }
-                        departamentoController.CreateDepartamento(numeroDepto);
-                        Integer telefono = Integer.parseInt(telefonoStr);
-                        departamentoController.CreatePersona(nombre, apellido, telefono, email,descripcion, numeroDepto);
-                        JOptionPane.showMessageDialog(Ventana, "Persona agregada");
-
-                        nombreTF.setText("");
-                        apellidoTF.setText("");
-                        telefonoTF.setText("");
-                        emailTF.setText("");
-                        numeroDeDeptoTextField.setText("");
-
+                        JOptionPane.showMessageDialog(Ventana, "El departamento no existe", "Error", JOptionPane.ERROR_MESSAGE);
                         return;
                     }
                     if (departamento.getPersonaModels().size() >= 10) {
@@ -102,7 +92,7 @@ public class Agregar extends JFrame{
 
                 Integer telefono = Integer.parseInt(telefonoStr);
                 Integer numeroDepto = Integer.parseInt(numeroDeptoStr);
-                departamentoController.CreatePersona(nombre, apellido, telefono, email,descripcion,numeroDepto);
+                departamentoController.CreatePersona(nombre, apellido, telefono, email,descripcion,numeroDepto,letraDepto);
                 JOptionPane.showMessageDialog(Ventana, "Persona agregada");
 
                 nombreTF.setText("");
@@ -116,31 +106,20 @@ public class Agregar extends JFrame{
         agregarVehiculoButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String validarDepto = numeroDeDeptoTextField.getText();
+                String numeroDeptoSRT = numeroDeDeptoTextField.getText();
+                String letra = letraTF.getText();
+
+                if (letra.isEmpty()){
+                    JOptionPane.showMessageDialog(Ventana, "El departamento debe tener una letra", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
 
                 try {
-                    Integer numeroDepto = Integer.parseInt(validarDepto);
-                    DepartamantoModel departamento = departamentoController.BuscarDepartamento(numeroDepto);
+                    Integer numeroDepto = Integer.parseInt(numeroDeptoSRT);
+                    DepartamantoModel departamento = departamentoController.BuscarDepartamento(letra,numeroDepto);
                     if (departamento == null){
-                        departamentoController.CreateDepartamento(numeroDepto);
-                        String estacioStr = estacioTF.getText();
-                        String marca = marcaTF.getText();
-                        String modelo = modeloTF.getText();
-                        String color = colorTF.getText();
-
-
-                        try {
-                            Integer estacionamiento = Integer.parseInt(estacioStr);
-                            departamentoController.CreateVehiculo(estacionamiento, marca, modelo, color, numeroDepto);
-                            JOptionPane.showMessageDialog(Ventana, "Vehículo agregado");
-
-                            marcaTF.setText("");
-                            modeloTF.setText("");
-                            colorTF.setText("");
-                            estacioTF.setText("");
-                        } catch (NumberFormatException ex) {
-                            JOptionPane.showMessageDialog(Ventana, "El estacionamiento debe ser un número válido", "Error", JOptionPane.ERROR_MESSAGE);
-                        }
+                        JOptionPane.showMessageDialog(Ventana, "El departamento no existe", "Error", JOptionPane.ERROR_MESSAGE);
+                        return;
                     }
 
                     if (departamento.getVehiculoModels().size() >= 10) {
@@ -156,7 +135,7 @@ public class Agregar extends JFrame{
 
                     try {
                         Integer estacionamiento = Integer.parseInt(estacioStr);
-                        departamentoController.CreateVehiculo(estacionamiento, marca, modelo, color, numeroDepto);
+                        departamentoController.CreateVehiculo(estacionamiento, marca, modelo, color, numeroDepto,letra);
                         JOptionPane.showMessageDialog(Ventana, "Vehículo agregado");
 
                         marcaTF.setText("");

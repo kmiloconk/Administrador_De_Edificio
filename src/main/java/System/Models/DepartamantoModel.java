@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DepartamantoModel {
+    private String letra;
     private Integer numeroDepto;
     private List<PersonaModel> personaModels;
     private List<VehiculoModel> vehiculoModels;
@@ -11,6 +12,14 @@ public class DepartamantoModel {
     public DepartamantoModel(){
         this.personaModels = new ArrayList<>();
         this.vehiculoModels = new ArrayList<>();
+    }
+
+    public void setLetra(String letra) {
+        this.letra = letra;
+    }
+
+    public String getLetra() {
+        return letra;
     }
 
     public void setNumeroDepto(Integer numeroDepto) {

@@ -8,7 +8,6 @@ import System.Models.VehiculoModel;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -78,6 +77,7 @@ public class Eliminar extends JFrame{
     private JButton eliminarButton18;
     private JButton eliminarButton19;
     private JButton eliminarTodoButton;
+    private JTextField letraTF;
     Integer telefono,telefono1,telefono2,telefono3,telefono4,telefono5,telefono6,telefono7,telefono8,telefono9;
     Integer estacinamiento,estacinamiento1,estacinamiento2,estacinamiento3,estacinamiento4,estacinamiento5,estacinamiento6,estacinamiento7,estacinamiento8,estacinamiento9;
     List<JPanel> personaPanels = Arrays.asList(personaPanel, personaPanel1, personaPanel2, personaPanel3, personaPanel4, personaPanel5, personaPanel6, personaPanel7, personaPanel8, personaPanel9);
@@ -114,8 +114,19 @@ public class Eliminar extends JFrame{
             public void actionPerformed(ActionEvent e) {
                 personaCant = 0;
                 vehiculoCant = 0;
+                for (JPanel panel : personaPanels){
+                    if(panel.isVisible()){
+                        panel.setVisible(false);
+                    }
+                }
+                for (JPanel panel : vehiculoPanels){
+                    if(panel.isVisible()){
+                        panel.setVisible(false);
+                    }
+                }
                 Integer numero = Integer.parseInt(numeroDeDeptoTextField.getText());
-                DepartamantoModel departamento = departamentoController.BuscarDepartamento(numero);
+                String letra = letraTF.getText();
+                DepartamantoModel departamento = departamentoController.BuscarDepartamento(letra,numero);
 
                 if (departamento == null) {
                     JOptionPane.showMessageDialog(null, "El departamento no existe", "Error", JOptionPane.ERROR_MESSAGE);
@@ -145,8 +156,9 @@ public class Eliminar extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 Integer numeroDepto = Integer.parseInt(numeroDeDeptoTextField.getText());
+                String letra = letraTF.getText();
                 telefono = telefonos.get(0);
-                departamentoController.DeletePersona(telefono, numeroDepto);
+                departamentoController.DeletePersona(telefono, numeroDepto,letra);
                 personaPanels.get(0).setVisible(false);
                 JOptionPane.showMessageDialog(Ventana,"Persona Eliminada");
             }
@@ -155,8 +167,9 @@ public class Eliminar extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 Integer numeroDepto = Integer.parseInt(numeroDeDeptoTextField.getText());
+                String letra = letraTF.getText();
                 telefono1 = telefonos.get(1);
-                departamentoController.DeletePersona(telefono1, numeroDepto);
+                departamentoController.DeletePersona(telefono1, numeroDepto,letra);
                 personaPanels.get(1).setVisible(false);
                 JOptionPane.showMessageDialog(Ventana,"Persona Eliminada");
             }
@@ -165,8 +178,9 @@ public class Eliminar extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 Integer numeroDepto = Integer.parseInt(numeroDeDeptoTextField.getText());
+                String letra = letraTF.getText();
                 telefono2 = telefonos.get(2);
-                departamentoController.DeletePersona(telefono2, numeroDepto);
+                departamentoController.DeletePersona(telefono2, numeroDepto,letra);
                 personaPanels.get(2).setVisible(false);
                 JOptionPane.showMessageDialog(Ventana,"Persona Eliminada");
             }
@@ -175,8 +189,9 @@ public class Eliminar extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 Integer numeroDepto = Integer.parseInt(numeroDeDeptoTextField.getText());
+                String letra = letraTF.getText();
                 telefono3 = telefonos.get(3);
-                departamentoController.DeletePersona(telefono3, numeroDepto);
+                departamentoController.DeletePersona(telefono3, numeroDepto,letra);
                 personaPanels.get(3).setVisible(false);
                 JOptionPane.showMessageDialog(Ventana,"Persona Eliminada");
             }
@@ -185,8 +200,9 @@ public class Eliminar extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 Integer numeroDepto = Integer.parseInt(numeroDeDeptoTextField.getText());
+                String letra = letraTF.getText();
                 telefono4 = telefonos.get(4);
-                departamentoController.DeletePersona(telefono4, numeroDepto);
+                departamentoController.DeletePersona(telefono4, numeroDepto,letra);
                 personaPanels.get(4).setVisible(false);
                 JOptionPane.showMessageDialog(Ventana,"Persona Eliminada");
             }
@@ -195,8 +211,9 @@ public class Eliminar extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 Integer numeroDepto = Integer.parseInt(numeroDeDeptoTextField.getText());
+                String letra = letraTF.getText();
                 telefono5 = telefonos.get(5);
-                departamentoController.DeletePersona(telefono5, numeroDepto);
+                departamentoController.DeletePersona(telefono5, numeroDepto,letra);
                 personaPanels.get(5).setVisible(false);
                 JOptionPane.showMessageDialog(Ventana,"Persona Eliminada");
             }
@@ -205,8 +222,9 @@ public class Eliminar extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 Integer numeroDepto = Integer.parseInt(numeroDeDeptoTextField.getText());
+                String letra = letraTF.getText();
                 telefono6 = telefonos.get(6);
-                departamentoController.DeletePersona(telefono6, numeroDepto);
+                departamentoController.DeletePersona(telefono6, numeroDepto,letra);
                 personaPanels.get(6).setVisible(false);
                 JOptionPane.showMessageDialog(Ventana,"Persona Eliminada");
             }
@@ -215,8 +233,9 @@ public class Eliminar extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 Integer numeroDepto = Integer.parseInt(numeroDeDeptoTextField.getText());
+                String letra = letraTF.getText();
                 telefono7 = telefonos.get(7);
-                departamentoController.DeletePersona(telefono7, numeroDepto);
+                departamentoController.DeletePersona(telefono7, numeroDepto,letra);
                 personaPanels.get(7).setVisible(false);
                 JOptionPane.showMessageDialog(Ventana,"Persona Eliminada");
             }
@@ -225,8 +244,9 @@ public class Eliminar extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 Integer numeroDepto = Integer.parseInt(numeroDeDeptoTextField.getText());
+                String letra = letraTF.getText();
                 telefono8 = telefonos.get(8);
-                departamentoController.DeletePersona(telefono8, numeroDepto);
+                departamentoController.DeletePersona(telefono8, numeroDepto,letra);
                 personaPanels.get(8).setVisible(false);
                 JOptionPane.showMessageDialog(Ventana,"Persona Eliminada");
             }
@@ -235,8 +255,9 @@ public class Eliminar extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 Integer numeroDepto = Integer.parseInt(numeroDeDeptoTextField.getText());
+                String letra = letraTF.getText();
                 telefono9 = telefonos.get(9);
-                departamentoController.DeletePersona(telefono9, numeroDepto);
+                departamentoController.DeletePersona(telefono9, numeroDepto,letra);
                 personaPanels.get(9).setVisible(false);
                 JOptionPane.showMessageDialog(Ventana,"Persona Eliminada");
             }
@@ -245,8 +266,9 @@ public class Eliminar extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 Integer numeroDepto = Integer.parseInt(numeroDeDeptoTextField.getText());
+                String letra = letraTF.getText();
                 estacinamiento = estacionamientos.get(0);
-                departamentoController.DeleteVehiculo(estacinamiento, numeroDepto);
+                departamentoController.DeleteVehiculo(estacinamiento, numeroDepto,letra);
                 JOptionPane.showMessageDialog(Ventana,"Vehiculo Eliminado");
                 vehiculoPanels.get(0).setVisible(false);
                 System.out.println(estacinamiento);
@@ -256,8 +278,9 @@ public class Eliminar extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 Integer numeroDepto = Integer.parseInt(numeroDeDeptoTextField.getText());
+                String letra = letraTF.getText();
                 estacinamiento1 = estacionamientos.get(1);
-                departamentoController.DeleteVehiculo(estacinamiento1, numeroDepto);
+                departamentoController.DeleteVehiculo(estacinamiento1, numeroDepto,letra);
                 vehiculoPanels.get(1).setVisible(false);
                 JOptionPane.showMessageDialog(Ventana,"Vehiculo Eliminado");
             }
@@ -266,8 +289,9 @@ public class Eliminar extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 Integer numeroDepto = Integer.parseInt(numeroDeDeptoTextField.getText());
+                String letra = letraTF.getText();
                 estacinamiento2 = estacionamientos.get(2);
-                departamentoController.DeleteVehiculo(estacinamiento2, numeroDepto);
+                departamentoController.DeleteVehiculo(estacinamiento2, numeroDepto,letra);
                 vehiculoPanels.get(2).setVisible(false);
                 JOptionPane.showMessageDialog(Ventana,"Vehiculo Eliminado");
             }
@@ -276,8 +300,9 @@ public class Eliminar extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 Integer numeroDepto = Integer.parseInt(numeroDeDeptoTextField.getText());
+                String letra = letraTF.getText();
                 estacinamiento3 = estacionamientos.get(3);
-                departamentoController.DeleteVehiculo(estacinamiento3, numeroDepto);
+                departamentoController.DeleteVehiculo(estacinamiento3, numeroDepto,letra);
                 vehiculoPanels.get(3).setVisible(false);
                 JOptionPane.showMessageDialog(Ventana,"Vehiculo Eliminado");
             }
@@ -286,8 +311,9 @@ public class Eliminar extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 Integer numeroDepto = Integer.parseInt(numeroDeDeptoTextField.getText());
+                String letra = letraTF.getText();
                 estacinamiento4 = estacionamientos.get(4);
-                departamentoController.DeleteVehiculo(estacinamiento4, numeroDepto);
+                departamentoController.DeleteVehiculo(estacinamiento4, numeroDepto,letra);
                 vehiculoPanels.get(4).setVisible(false);
                 JOptionPane.showMessageDialog(Ventana,"Vehiculo Eliminado");
             }
@@ -296,8 +322,9 @@ public class Eliminar extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 Integer numeroDepto = Integer.parseInt(numeroDeDeptoTextField.getText());
+                String letra = letraTF.getText();
                 estacinamiento5 = estacionamientos.get(5);
-                departamentoController.DeleteVehiculo(estacinamiento5, numeroDepto);
+                departamentoController.DeleteVehiculo(estacinamiento5, numeroDepto,letra);
                 vehiculoPanels.get(5).setVisible(false);
                 JOptionPane.showMessageDialog(Ventana,"Vehiculo Eliminado");
             }
@@ -306,8 +333,9 @@ public class Eliminar extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 Integer numeroDepto = Integer.parseInt(numeroDeDeptoTextField.getText());
+                String letra = letraTF.getText();
                 estacinamiento6 = estacionamientos.get(6);
-                departamentoController.DeleteVehiculo(estacinamiento6, numeroDepto);
+                departamentoController.DeleteVehiculo(estacinamiento6, numeroDepto,letra);
                 vehiculoPanels.get(6).setVisible(false);
                 JOptionPane.showMessageDialog(Ventana,"Vehiculo Eliminado");
             }
@@ -316,8 +344,9 @@ public class Eliminar extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 Integer numeroDepto = Integer.parseInt(numeroDeDeptoTextField.getText());
+                String letra = letraTF.getText();
                 estacinamiento7 = estacionamientos.get(7);
-                departamentoController.DeleteVehiculo(estacinamiento7, numeroDepto);
+                departamentoController.DeleteVehiculo(estacinamiento7, numeroDepto,letra);
                 vehiculoPanels.get(7).setVisible(false);
                 JOptionPane.showMessageDialog(Ventana,"Vehiculo Eliminado");
             }
@@ -326,8 +355,9 @@ public class Eliminar extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 Integer numeroDepto = Integer.parseInt(numeroDeDeptoTextField.getText());
+                String letra = letraTF.getText();
                 estacinamiento8 = estacionamientos.get(8);
-                departamentoController.DeleteVehiculo(estacinamiento8, numeroDepto);
+                departamentoController.DeleteVehiculo(estacinamiento8, numeroDepto,letra);
                 vehiculoPanels.get(8).setVisible(false);
                 JOptionPane.showMessageDialog(Ventana,"Vehiculo Eliminado");
             }
@@ -336,8 +366,9 @@ public class Eliminar extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 Integer numeroDepto = Integer.parseInt(numeroDeDeptoTextField.getText());
+                String letra = letraTF.getText();
                 estacinamiento9 = estacionamientos.get(9);
-                departamentoController.DeleteVehiculo(estacinamiento9, numeroDepto);
+                departamentoController.DeleteVehiculo(estacinamiento9, numeroDepto,letra);
                 vehiculoPanels.get(9).setVisible(false);
                 JOptionPane.showMessageDialog(Ventana,"Vehiculo Eliminado");
             }
@@ -350,7 +381,8 @@ public class Eliminar extends JFrame{
 
                 if (option == JOptionPane.OK_OPTION) {
                     Integer numeroDepto = Integer.parseInt(numeroDeDeptoTextField.getText());
-                    departamentoController.DeleteDepartamento(numeroDepto);
+                    String letra = letraTF.getText();
+                    departamentoController.DeleteDepartamento(numeroDepto,letra);
                     JOptionPane.showMessageDialog(Ventana,"Departamento Eliminado");
                     setVisible(false);
                     PantallaPrincipal pantallaPrincipal = new PantallaPrincipal(departamentoController);

@@ -10,7 +10,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 
 public class Editar extends JFrame{
@@ -120,6 +119,7 @@ public class Editar extends JFrame{
     private JTextField numeroETF7;
     private JTextField numeroETF8;
     private JTextField numeroETF9;
+    private JTextField letraTF;
 
     List<JPanel> personaPanels = Arrays.asList(personaPanel, personaPanel1, personaPanel2, personaPanel3, personaPanel4, personaPanel5, personaPanel6, personaPanel7, personaPanel8, personaPanel9);
     List<JTextField> nombrePTFs = Arrays.asList(nombrePTF, nombrePTF1, nombrePTF2, nombrePTF3, nombrePTF4, nombrePTF5, nombrePTF6, nombrePTF7, nombrePTF8, nombrePTF9);
@@ -163,6 +163,11 @@ public class Editar extends JFrame{
             public void actionPerformed(ActionEvent e) {
                 try {
                     String numeroDeptoStr = numeroDeDeptoTextField.getText();
+                    String letra = letraTF.getText();
+                    if (letra.isEmpty()){
+                        JOptionPane.showMessageDialog(Ventana, "El departamento debe tener una letra", "Error", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
 
                     if (numeroDeptoStr.isEmpty()) {
                         JOptionPane.showMessageDialog(null, "Por favor, ingrese un número de departamento", "Error", JOptionPane.ERROR_MESSAGE);
@@ -177,7 +182,7 @@ public class Editar extends JFrame{
                         return;
                     }
 
-                    DepartamantoModel departamento = departamentoController.BuscarDepartamento(numero);
+                    DepartamantoModel departamento = departamentoController.BuscarDepartamento(letra,numero);
                     if (departamento == null) {
                         JOptionPane.showMessageDialog(null, "El departamento no existe", "Error", JOptionPane.ERROR_MESSAGE);
                         return;
@@ -205,7 +210,7 @@ public class Editar extends JFrame{
                         PersonaModel persona = new PersonaModel(nombre, apellido, telefono, descripcion,"Arrendatario");
                         newPersonas.add(persona);
                     }
-                    departamentoController.UpdatePersona(newPersonas, numero);
+                    departamentoController.UpdatePersona(newPersonas, numero,letra);
 
                     List<VehiculoModel> newvehiculos = new ArrayList<>();
 
@@ -225,7 +230,7 @@ public class Editar extends JFrame{
                         VehiculoModel vehiculoModel = new VehiculoModel(estacionamiento, marca, modelo, color);
                         newvehiculos.add(vehiculoModel);
                     }
-                    departamentoController.UpdateVehiculo(newvehiculos, numero);
+                    departamentoController.UpdateVehiculo(newvehiculos, numero,letra);
                     JOptionPane.showMessageDialog(Ventana, "Los cambios han sido guardados");
 
                 } catch (Exception ex) {
@@ -237,6 +242,7 @@ public class Editar extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 String numeroDeptoStr = numeroDeDeptoTextField.getText();
+                String letra = letraTF.getText();
 
                 if (numeroDeptoStr.isEmpty()) {
                     JOptionPane.showMessageDialog(null, "Por favor, ingrese un número de departamento", "Error", JOptionPane.ERROR_MESSAGE);
@@ -251,7 +257,7 @@ public class Editar extends JFrame{
                     return;
                 }
 
-                DepartamantoModel departamento = departamentoController.BuscarDepartamento(numero);
+                DepartamantoModel departamento = departamentoController.BuscarDepartamento(letra,numero);
                 if (departamento == null) {
                     JOptionPane.showMessageDialog(null, "El departamento no existe", "Error", JOptionPane.ERROR_MESSAGE);
                     return;
@@ -259,6 +265,16 @@ public class Editar extends JFrame{
 
                 personaCant = 0;
                 vehiculoCant = 0;
+                for (JPanel panel : personaPanels){
+                    if(panel.isVisible()){
+                        panel.setVisible(false);
+                    }
+                }
+                for (JPanel panel : vehiculoPanels){
+                    if(panel.isVisible()){
+                        panel.setVisible(false);
+                    }
+                }
 
                 for (PersonaModel persona : departamento.getPersonaModels()) {
                     if (personaCant < personaPanels.size()) {

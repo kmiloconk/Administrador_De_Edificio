@@ -1,8 +1,15 @@
 package System.View;
 
 import System.Controller.DepartamentoController;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileSystemView;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
@@ -11,6 +18,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.File;
 
 public class PantallaPrincipal extends JFrame {
     private JPanel Ventana;
@@ -26,6 +34,8 @@ public class PantallaPrincipal extends JFrame {
     private JButton OpcionesButton;
     private JPanel OptionPanel;
     private JButton resetButton;
+    private JButton salirButton;
+    private JButton guardarButton;
 
     public PantallaPrincipal( DepartamentoController departamentoController){
         table1.setModel(departamentoController.tablaModelGenerator(departamentoController.getDepartamentoModels()));
@@ -124,6 +134,28 @@ public class PantallaPrincipal extends JFrame {
 
             }
         });
+        Exportarbutton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int option = JOptionPane.showConfirmDialog(null,"¿Desea Exportar esta tabla a su Escritorio en formato .PDF?","Adevertencia",JOptionPane.OK_CANCEL_OPTION,JOptionPane.WARNING_MESSAGE);
+
+                if (option == JOptionPane.OK_OPTION) {
+                    try {
+                        exportToPDF();
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                }
+
+            }
+        });
+        guardarButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                departamentoController.GuardarDeptos();
+            }
+        });
+
         adjustColumnWidths(table1);
         centerTableText(table1);
 
@@ -158,6 +190,35 @@ public class PantallaPrincipal extends JFrame {
         for (int column = 0; column < table.getColumnCount(); column++) {
             table.getColumnModel().getColumn(column).setCellRenderer(centerRenderer);
         }
+    }
+    private void exportToPDF() throws Exception {
+        File desktopDir = FileSystemView.getFileSystemView().getHomeDirectory();
+        File pdfFile = new File(desktopDir, "tabla.PDF");
+
+        Document document = new Document(PageSize.LEGAL.rotate());
+        PdfWriter.getInstance(document, new java.io.FileOutputStream(pdfFile));
+        document.open();
+
+        PdfPTable pdfTable = new PdfPTable(table1.getColumnCount());
+        pdfTable.setWidthPercentage(100);
+
+        for (int i = 0; i < table1.getColumnCount(); i++) {
+            pdfTable.addCell(table1.getColumnName(i));
+        }
+
+        for (int rows = 0; rows < table1.getRowCount(); rows++) {
+            for (int cols = 0; cols < table1.getColumnCount(); cols++) {
+                PdfPCell cell = new PdfPCell(new Phrase(table1.getModel().getValueAt(rows, cols).toString()));
+                cell.setPadding(5);
+                pdfTable.addCell(cell);
+            }
+        }
+
+
+        document.add(pdfTable);
+        document.close();
+
+        JOptionPane.showMessageDialog(this, "PDF exportado exitosamente al escritorio!");
     }
 
 

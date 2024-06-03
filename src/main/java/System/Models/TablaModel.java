@@ -19,6 +19,12 @@ public class TablaModel extends AbstractTableModel {
         for (DepartamantoModel departamento : departamentos) {
             List<PersonaModel> personas = departamento.getPersonaModels();
             List<VehiculoModel> vehiculos = departamento.getVehiculoModels();
+            if(personas.isEmpty()){
+                String numerDepto = departamento.getNumeroDepto().toString();
+                String letra = departamento.getLetra();
+                rowDataList.add(new RowData(letra +" "+numerDepto,"", "", "", ""));
+
+            }
 
             List<String> propietarios = new ArrayList<>();
             List<String> arrendatarios = new ArrayList<>();
@@ -42,8 +48,9 @@ public class TablaModel extends AbstractTableModel {
                     String propietario = i < numPropietarios ? propietarios.get(i) : null;
                     String arrendatario = i< numArrendatarios? arrendatarios.get(i):null;
                     String numerDepto = departamento.getNumeroDepto().toString();
+                    String letra = departamento.getLetra();
                     if (currentDepartmentNumber != departamento.getNumeroDepto()) {
-                        rowDataList.add(new RowData(numerDepto,propietario, arrendatario, "", ""));
+                        rowDataList.add(new RowData(letra +" "+numerDepto,propietario, arrendatario, "", ""));
                         currentDepartmentNumber = departamento.getNumeroDepto();
                     } else {
                         rowDataList.add(new RowData(null, propietario, arrendatario, "", ""));
@@ -55,9 +62,10 @@ public class TablaModel extends AbstractTableModel {
                     String arrendatario = i< numArrendatarios? arrendatarios.get(i):null;
                     VehiculoModel vehiculo = i < numVehiculos ? vehiculos.get(i) : null;
                     String numerDepto = departamento.getNumeroDepto().toString();
+                    String letra = departamento.getLetra();
                     if (vehiculo==null){
                         if (currentDepartmentNumber != departamento.getNumeroDepto()) {
-                            rowDataList.add(new RowData(numerDepto,propietario, arrendatario, "", ""));
+                            rowDataList.add(new RowData(letra+" "+numerDepto,propietario, arrendatario, "", ""));
                             currentDepartmentNumber = departamento.getNumeroDepto();
                         } else {
                             rowDataList.add(new RowData(null, propietario, arrendatario, "", ""));
@@ -67,7 +75,7 @@ public class TablaModel extends AbstractTableModel {
                         String estacionamiento = vehiculo.getEstacionamiento().toString();
 
                         if (currentDepartmentNumber != departamento.getNumeroDepto()) {
-                            rowDataList.add(new RowData(numerDepto, propietario, arrendatario, vehiculoInfo, estacionamiento));
+                            rowDataList.add(new RowData(letra+" "+numerDepto, propietario, arrendatario, vehiculoInfo, estacionamiento));
                             currentDepartmentNumber = departamento.getNumeroDepto();
                         } else {
                             rowDataList.add(new RowData(null, propietario, arrendatario, vehiculoInfo, estacionamiento));
