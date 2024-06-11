@@ -1,6 +1,7 @@
 package System.View;
 
 import System.Controller.DepartamentoController;
+import System.Controller.LoginController;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Phrase;
@@ -52,9 +53,7 @@ public class PantallaPrincipal extends JFrame {
         textField1.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
-                // Verifica si la tecla presionada es Enter
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-                    // Simula el clic en el botón de búsqueda
                     Buscar.doClick();
                 }
             }
@@ -153,6 +152,45 @@ public class PantallaPrincipal extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 departamentoController.GuardarDeptos();
+                JOptionPane.showMessageDialog(null,"Sean guardado todos los datos");
+            }
+        });
+        resetButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int option = JOptionPane.showConfirmDialog(null,"¿Seguro que desea recetear la tabla? se eliminaran todos los datos","Adevertencia",JOptionPane.OK_CANCEL_OPTION,JOptionPane.WARNING_MESSAGE);
+
+                if (option == JOptionPane.OK_OPTION) {
+                    Recet recet = new Recet(departamentoController);
+                    recet.setVisible(true);
+                }
+
+            }
+        });
+        UsiarioButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Contraseña contraseña = new Contraseña();
+                contraseña.setVisible(true);
+            }
+        });
+        salirButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int option = JOptionPane.showConfirmDialog(null,"¿Desea guardar los cambios realizados antes de salir? ","Adevertencia",JOptionPane.YES_NO_CANCEL_OPTION,JOptionPane.WARNING_MESSAGE);
+
+                if (option == JOptionPane.YES_OPTION) {
+                    guardarButton.doClick();
+                    Login login = new Login(new DepartamentoController(),new LoginController());
+                    login.setVisible(true);
+                    login.setExtendedState(JFrame.MAXIMIZED_BOTH);
+                    setVisible(false);
+                }else if (option == JOptionPane.NO_OPTION){
+                    Login login = new Login(new DepartamentoController(),new LoginController());
+                    login.setVisible(true);
+                    login.setExtendedState(JFrame.MAXIMIZED_BOTH);
+                    setVisible(false);
+                }
             }
         });
 
@@ -220,6 +258,7 @@ public class PantallaPrincipal extends JFrame {
 
         JOptionPane.showMessageDialog(this, "PDF exportado exitosamente al escritorio!");
     }
+
 
 
 }

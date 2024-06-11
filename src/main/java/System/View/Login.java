@@ -42,6 +42,8 @@ public class Login extends JFrame{
                 String password = passwordField1.getText();
                 if (loginController.ValidatePassword(password)){
                     setVisible(false);
+                    departamentoController.GenerarEjemplo();
+                    departamentoController.CargarDeptos();
                     PantallaPrincipal pantalla = new PantallaPrincipal(departamentoController);
                     pantalla.setVisible(true);
                     pantalla.setExtendedState(JFrame.MAXIMIZED_BOTH);

@@ -18,66 +18,47 @@ public class DepartamentoController {
     }
 
     public void GenerarEjemplo(){
-       /* PersonaModel persona1 = new PersonaModel("Juan", "Perez", 123456789,"email@ejemplo.com", "Propietario");
-        PersonaModel persona2 = new PersonaModel("María", "López", 987654321,"email@ejemplo.com", "Arrendatario");
-        PersonaModel persona3 = new PersonaModel("Pedro", "García", 456789123,"email@ejemplo.com", "Propietario");
-        PersonaModel persona4 = new PersonaModel("Ana", "Martínez", 789123456,"email@ejemplo.com", "Arrendatario");
-        PersonaModel persona5 = new PersonaModel("Luis", "Hernández", 321654987,"email@ejemplo.com", "Propietario");
-        PersonaModel persona6 = new PersonaModel("Laura", "González", 654987321,"email@ejemplo.com", "Arrendatario");
+        for (int i =1; i<=50;i++){
+            DepartamantoModel departamantoModel = new DepartamantoModel();
+            departamantoModel.setLetra("A");
+            if(i<=10){
+                departamantoModel.setNumeroDepto(100+i);
+                departamentoModels.add(departamantoModel);
+            }else if (i<=20){
+                departamantoModel.setNumeroDepto(200+i-10);
+                departamentoModels.add(departamantoModel);
+            }else if (i<=30){
+                departamantoModel.setNumeroDepto(300+i-20);
+                departamentoModels.add(departamantoModel);
+            }else if (i<=40){
+                departamantoModel.setNumeroDepto(400+i-30);
+                departamentoModels.add(departamantoModel);
+            }else if (i<=50){
+                departamantoModel.setNumeroDepto(500+i-40);
+                departamentoModels.add(departamantoModel);
+            }
+        }
+        for (int i =1; i<=50;i++){
+            DepartamantoModel departamantoModel = new DepartamantoModel();
+            departamantoModel.setLetra("B");
+            if(i<=10){
+                departamantoModel.setNumeroDepto(100+i+10);
+                departamentoModels.add(departamantoModel);
+            }else if (i<=20){
+                departamantoModel.setNumeroDepto(200+i);
+                departamentoModels.add(departamantoModel);
+            }else if (i<=30){
+                departamantoModel.setNumeroDepto(300+i-10);
+                departamentoModels.add(departamantoModel);
+            }else if (i<=40){
+                departamantoModel.setNumeroDepto(400+i-20);
+                departamentoModels.add(departamantoModel);
+            }else if (i<=50){
+                departamantoModel.setNumeroDepto(500+i-30);
+                departamentoModels.add(departamantoModel);
+            }
+        }
 
-        VehiculoModel vehiculo1 = new VehiculoModel(1,"Toyota", "Corolla", "Blanco");
-        VehiculoModel vehiculo2 = new VehiculoModel(2,"Ford", "Fiesta", "Azul");
-        VehiculoModel vehiculo3 = new VehiculoModel(3,"Honda", "Civic", "Rojo");
-        VehiculoModel vehiculo4 = new VehiculoModel(4,"Chevrolet", "Spark", "Gris");
-        VehiculoModel vehiculo5 = new VehiculoModel(5,"Nissan", "Sentra", "Blanco");
-        VehiculoModel vehiculo6 = new VehiculoModel(6,"Volkswagen", "Jetta", "Negro");
-        VehiculoModel vehiculo7 = new VehiculoModel(7,"Hyundai", "Accent", "Verde");
-        VehiculoModel vehiculo8 = new VehiculoModel(8,"Mazda", "3", "Amarillo");
-        VehiculoModel vehiculo9 = new VehiculoModel(9,"Kia", "Rio", "Marrón");
-        VehiculoModel vehiculo10 = new VehiculoModel(10,"BMW", "Serie 3", "Blanco");
-        departamento1.getPersonaModels().add(persona1);
-        departamento2.getPersonaModels().add(persona2);
-        departamento3.getPersonaModels().add(persona6);
-        departamento4.getPersonaModels().add(persona4);
-        departamento5.getPersonaModels().add(persona5);
-        departamento5.getPersonaModels().add(persona3);
-
-        departamento1.getVehiculoModels().add(vehiculo1);
-        departamento1.getVehiculoModels().add(vehiculo2);
-        departamento2.getVehiculoModels().add(vehiculo3);
-        departamento2.getVehiculoModels().add(vehiculo4);
-        departamento3.getVehiculoModels().add(vehiculo5);
-        departamento3.getVehiculoModels().add(vehiculo6);
-        departamento4.getVehiculoModels().add(vehiculo7);
-        departamento4.getVehiculoModels().add(vehiculo8);
-        departamento5.getVehiculoModels().add(vehiculo9);
-        departamento5.getVehiculoModels().add(vehiculo10);*/
-
-        DepartamantoModel departamento1 = new DepartamantoModel();
-        DepartamantoModel departamento2 = new DepartamantoModel();
-        DepartamantoModel departamento3 = new DepartamantoModel();
-        DepartamantoModel departamento4 = new DepartamantoModel();
-        DepartamantoModel departamento5 = new DepartamantoModel();
-        DepartamantoModel departamantoModel = new DepartamantoModel();
-        departamantoModel.setNumeroDepto(6);
-        departamantoModel.setLetra("A");
-        departamento1.setNumeroDepto(1);
-        departamento2.setNumeroDepto(2);
-        departamento3.setNumeroDepto(3);
-        departamento4.setNumeroDepto(4);
-        departamento5.setNumeroDepto(5);
-        departamento1.setLetra("A");
-        departamento2.setLetra("A");
-        departamento3.setLetra("A");
-        departamento4.setLetra("A");
-        departamento5.setLetra("B");
-
-        departamentoModels.add(departamento1);
-        departamentoModels.add(departamento2);
-        departamentoModels.add(departamento3);
-        departamentoModels.add(departamento4);
-        departamentoModels.add(departamento5);
-        departamentoModels.add(departamantoModel);
     }
 
     public List<DepartamantoModel> getDepartamentoModels() {
@@ -304,6 +285,13 @@ public class DepartamentoController {
 
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    public void Recet(){
+        for (DepartamantoModel departamantoModel: departamentoModels){
+            departamantoModel.getPersonaModels().clear();
+            departamantoModel.getVehiculoModels().clear();
         }
     }
 

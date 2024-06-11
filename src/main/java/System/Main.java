@@ -10,15 +10,10 @@ import javax.swing.*;
 
 public class Main {
     public static void main(String[] args) {
-        DepartamentoController departamentoController =new DepartamentoController();
-        PasswordModel passwordModel = new PasswordModel("user123");
-        LoginController loginController = new LoginController(passwordModel);
-        departamentoController.GenerarEjemplo();
-        departamentoController.CargarDeptos();
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                Login login = new Login(departamentoController,loginController);
+                Login login = new Login(new DepartamentoController(),new LoginController());
                 login.setVisible(true);
                 login.setExtendedState(JFrame.MAXIMIZED_BOTH);
             }

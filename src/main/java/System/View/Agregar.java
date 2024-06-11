@@ -2,10 +2,13 @@ package System.View;
 
 import System.Controller.DepartamentoController;
 import System.Models.DepartamantoModel;
+import System.Models.VehiculoModel;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class Agregar extends JFrame{
     private JPanel Ventana;
@@ -30,6 +33,7 @@ public class Agregar extends JFrame{
         setSize(1000, 500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
+
         volverButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -135,6 +139,13 @@ public class Agregar extends JFrame{
 
                     try {
                         Integer estacionamiento = Integer.parseInt(estacioStr);
+
+                        for (VehiculoModel vehiculo : departamento.getVehiculoModels()) {
+                            if (vehiculo.getEstacionamiento().equals(estacionamiento)) {
+                                JOptionPane.showMessageDialog(Ventana, "El número de estacionamiento ya está en uso", "Error", JOptionPane.ERROR_MESSAGE);
+                                return;
+                            }
+                        }
                         departamentoController.CreateVehiculo(estacionamiento, marca, modelo, color, numeroDepto,letra);
                         JOptionPane.showMessageDialog(Ventana, "Vehículo agregado");
 
