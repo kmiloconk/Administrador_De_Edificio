@@ -5,10 +5,10 @@ import System.Models.TablaModel;
 import System.Models.VehiculoModel;
 import com.opencsv.CSVWriter;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 
 public class DepartamentoController {
@@ -159,7 +159,8 @@ public class DepartamentoController {
     public void DeleteDepartamento(Integer numeroDepto,String letra){
         for (DepartamantoModel departamento: departamentoModels){
             if (Objects.equals(departamento.getNumeroDepto(), numeroDepto) && Objects.equals(departamento.getLetra(), letra)){
-                departamentoModels.remove(departamento);
+                departamento.getPersonaModels().clear();
+                departamento.getVehiculoModels().clear();
                 break;
             }
         }
@@ -204,45 +205,82 @@ public class DepartamentoController {
         return departamentoEncontrados;
     }
 
-    public void GuardarDeptos(){
-        String csvFilePath = "files/personas.csv";
-        try (CSVWriter writer = new CSVWriter(new FileWriter(csvFilePath))) {
-
-            for (DepartamantoModel departamantoModel:departamentoModels){
-                for (PersonaModel personaModel:departamantoModel.getPersonaModels()){
-                    String[] record1 = {departamantoModel.getLetra(),departamantoModel.getNumeroDepto().toString(),personaModel.getNombre(),personaModel.getApellido(),personaModel.getTelefono().toString(),personaModel.getEmail(),personaModel.getDescripcion()};
-                    writer.writeNext(record1);
-                }
-            }
-
-        } catch (IOException e) {
-            System.err.println("Error al escribir el archivo CSV: " + e.getMessage());
+    public void GuardarDeptos() {
+        String programFilesDir = System.getenv("ProgramFiles");
+        if (programFilesDir == null) {
+            programFilesDir = System.getenv("ProgramFiles(x86)");
         }
-        String csvFilePath2 = "files/vehiculos.csv";
-        try (CSVWriter writer = new CSVWriter(new FileWriter(csvFilePath2))) {
+        String appDirPath = programFilesDir + "/EdificioPietraApp";
 
-            for (DepartamantoModel departamantoModel:departamentoModels){
-                for (VehiculoModel vehiculoModel:departamantoModel.getVehiculoModels()){
-                    String[] record1 = {departamantoModel.getLetra(),departamantoModel.getNumeroDepto().toString(),vehiculoModel.getMarca(),vehiculoModel.getModelo(),vehiculoModel.getColor(),vehiculoModel.getEstacionamiento().toString()};
+        // Crear directorio si no existe
+        Path appDir = Paths.get(appDirPath);
+        try {
+            if (!Files.exists(appDir)) {
+                Files.createDirectory(appDir);
+            }
+        } catch (IOException e) {
+            System.err.println("Error al crear el directorio: " + e.getMessage());
+            return;
+        }
+
+        String csvFilePathPersonas = appDirPath + "/personas.csv";
+        String csvFilePathVehiculos = appDirPath + "/vehiculos.csv";
+
+        // Guardar personas.csv
+        try (CSVWriter writer = new CSVWriter(new FileWriter(csvFilePathPersonas))) {
+            for (DepartamantoModel departamentoModel : departamentoModels) {
+                for (PersonaModel personaModel : departamentoModel.getPersonaModels()) {
+                    String[] record1 = {
+                            departamentoModel.getLetra(),
+                            departamentoModel.getNumeroDepto().toString(),
+                            personaModel.getNombre(),
+                            personaModel.getApellido(),
+                            personaModel.getTelefono().toString(),
+                            personaModel.getEmail(),
+                            personaModel.getDescripcion()
+                    };
                     writer.writeNext(record1);
                 }
             }
-
         } catch (IOException e) {
-            System.err.println("Error al escribir el archivo CSV: " + e.getMessage());
+            System.err.println("Error al escribir el archivo personas.csv: " + e.getMessage());
+        }
+
+        // Guardar vehiculos.csv
+        try (CSVWriter writer = new CSVWriter(new FileWriter(csvFilePathVehiculos))) {
+            for (DepartamantoModel departamentoModel : departamentoModels) {
+                for (VehiculoModel vehiculoModel : departamentoModel.getVehiculoModels()) {
+                    String[] record1 = {
+                            departamentoModel.getLetra(),
+                            departamentoModel.getNumeroDepto().toString(),
+                            vehiculoModel.getMarca(),
+                            vehiculoModel.getModelo(),
+                            vehiculoModel.getColor(),
+                            vehiculoModel.getEstacionamiento().toString()
+                    };
+                    writer.writeNext(record1);
+                }
+            }
+        } catch (IOException e) {
+            System.err.println("Error al escribir el archivo vehiculos.csv: " + e.getMessage());
         }
     }
 
-    public void CargarDeptos(){
-        String csvFile = "Files/personas.csv";
+    public void CargarDeptos() {
+        String programFilesDir = System.getenv("ProgramFiles");
+        if (programFilesDir == null) {
+            programFilesDir = System.getenv("ProgramFiles(x86)");
+        }
+        String appDirPath = programFilesDir + "/EdificioPietraApp";
+
+        String csvFilePathPersonas = appDirPath + "/personas.csv";
+        String csvFilePathVehiculos = appDirPath + "/vehiculos.csv";
         String line;
         String csvSplitBy = ",";
 
-        try (BufferedReader br = new BufferedReader(new FileReader(csvFile))) {
-
+        // Cargar el archivo personas.csv
+        try (BufferedReader br = new BufferedReader(new FileReader(csvFilePathPersonas))) {
             while ((line = br.readLine()) != null) {
-
-
                 String[] datos = line.split(csvSplitBy);
 
                 // Extraer los datos necesarios
@@ -261,26 +299,22 @@ public class DepartamentoController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        String csvFile2 = "Files/vehiculos.csv";
-        String line2;
-        String csvSplitBy2 = ",";
-        try (BufferedReader br = new BufferedReader(new FileReader(csvFile2))) {
 
-            while ((line2 = br.readLine()) != null) {
-
-
-                String[] datos2 = line2.split(csvSplitBy2);
+        // Cargar el archivo vehiculos.csv
+        try (BufferedReader br = new BufferedReader(new FileReader(csvFilePathVehiculos))) {
+            while ((line = br.readLine()) != null) {
+                String[] datos = line.split(csvSplitBy);
 
                 // Extraer los datos necesarios
-                String letra = datos2[0].replace("\"", "");
-                Integer numeroDepto = Integer.parseInt(datos2[1].replace("\"", ""));
-                String marca = datos2[2].replace("\"", "");
-                String modelo = datos2[3].replace("\"", "");
-                String color = datos2[4].replace("\"", "");
-                Integer estacionamiento = Integer.parseInt(datos2[5].replace("\"", ""));
+                String letra = datos[0].replace("\"", "");
+                Integer numeroDepto = Integer.parseInt(datos[1].replace("\"", ""));
+                String marca = datos[2].replace("\"", "");
+                String modelo = datos[3].replace("\"", "");
+                String color = datos[4].replace("\"", "");
+                Integer estacionamiento = Integer.parseInt(datos[5].replace("\"", ""));
 
-                // Crear la persona y añadirla al departamento correspondiente
-                CreateVehiculo(estacionamiento,marca,modelo,color, numeroDepto, letra);
+                // Crear el vehículo y añadirlo al departamento correspondiente
+                CreateVehiculo(estacionamiento, marca, modelo, color, numeroDepto, letra);
             }
 
         } catch (IOException e) {

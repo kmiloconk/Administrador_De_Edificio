@@ -12,78 +12,99 @@ public class TablaModel extends AbstractTableModel {
     private int currentDepartmentNumber = -1;
 
     public TablaModel(List<DepartamantoModel> departamentos) {
-        // Sort departments by department number
         Collections.sort(departamentos, Comparator.comparingInt(DepartamantoModel::getNumeroDepto));
 
-        // Populate row data list
         for (DepartamantoModel departamento : departamentos) {
             List<PersonaModel> personas = departamento.getPersonaModels();
             List<VehiculoModel> vehiculos = departamento.getVehiculoModels();
             if(personas.isEmpty()){
-                String numerDepto = departamento.getNumeroDepto().toString();
-                String letra = departamento.getLetra();
-                rowDataList.add(new RowData(letra +" "+numerDepto,"", "", "", ""));
-
-            }
-
-            List<String> propietarios = new ArrayList<>();
-            List<String> arrendatarios = new ArrayList<>();
-            for (PersonaModel persona : personas) {
-                if ("Propietario".equalsIgnoreCase(persona.getDescripcion())) {
-                    propietarios.add(persona.getNombre() + " " + persona.getApellido() + " | " + persona.getTelefono() + " | " + persona.getEmail());
-                } else if ("Arrendatario".equalsIgnoreCase(persona.getDescripcion())) {
-                    arrendatarios.add(persona.getNombre() + " " + persona.getApellido() + " | " + persona.getTelefono() + " | " + persona.getEmail());
-                }
-            }
-
-            int numPropietarios = propietarios.size();
-            int numArrendatarios = arrendatarios.size();
-            int numVehiculos = vehiculos.size();
-            int max1 = Math.max(numPropietarios, numVehiculos);
-            int max2 = Math.max(max1,numArrendatarios);
-
-
-            if (vehiculos.isEmpty()) {
-                for (int i = 0; i < max2; i++){
-                    String propietario = i < numPropietarios ? propietarios.get(i) : null;
-                    String arrendatario = i< numArrendatarios? arrendatarios.get(i):null;
+                if (vehiculos.isEmpty()) {
                     String numerDepto = departamento.getNumeroDepto().toString();
                     String letra = departamento.getLetra();
                     if (currentDepartmentNumber != departamento.getNumeroDepto()) {
-                        rowDataList.add(new RowData(letra +" "+numerDepto,propietario, arrendatario, "", ""));
+                        rowDataList.add(new RowData(letra + " " + numerDepto, "", "", "", ""));
                         currentDepartmentNumber = departamento.getNumeroDepto();
                     } else {
-                        rowDataList.add(new RowData(null, propietario, arrendatario, "", ""));
+                        rowDataList.add(new RowData(null, "", "", "", ""));
                     }
-                }
-            }else {
-                for (int i = 0; i < max2; i++){
-                    String propietario = i < numPropietarios ? propietarios.get(i) : null;
-                    String arrendatario = i< numArrendatarios? arrendatarios.get(i):null;
-                    VehiculoModel vehiculo = i < numVehiculos ? vehiculos.get(i) : null;
-                    String numerDepto = departamento.getNumeroDepto().toString();
-                    String letra = departamento.getLetra();
-                    if (vehiculo==null){
-                        if (currentDepartmentNumber != departamento.getNumeroDepto()) {
-                            rowDataList.add(new RowData(letra+" "+numerDepto,propietario, arrendatario, "", ""));
-                            currentDepartmentNumber = departamento.getNumeroDepto();
-                        } else {
-                            rowDataList.add(new RowData(null, propietario, arrendatario, "", ""));
-                        }
-                    }else {
+                }else {
+
+                    for (int i = 0; i < vehiculos.size(); i++) {
+                        String numerDepto = departamento.getNumeroDepto().toString();
+                        String letra = departamento.getLetra();
+                        VehiculoModel vehiculo = vehiculos.get(i);
                         String vehiculoInfo = vehiculo.getMarca() + " | " + vehiculo.getModelo() + " | " + vehiculo.getColor();
                         String estacionamiento = vehiculo.getEstacionamiento().toString();
 
                         if (currentDepartmentNumber != departamento.getNumeroDepto()) {
-                            rowDataList.add(new RowData(letra+" "+numerDepto, propietario, arrendatario, vehiculoInfo, estacionamiento));
+                            rowDataList.add(new RowData(letra + " " + numerDepto, "", "", vehiculoInfo, estacionamiento));
                             currentDepartmentNumber = departamento.getNumeroDepto();
                         } else {
-                            rowDataList.add(new RowData(null, propietario, arrendatario, vehiculoInfo, estacionamiento));
+                            rowDataList.add(new RowData(null, "", "", vehiculoInfo, estacionamiento));
+                        }
+
+                    }
+                }
+            }else {
+
+                List<String> propietarios = new ArrayList<>();
+                List<String> arrendatarios = new ArrayList<>();
+                for (PersonaModel persona : personas) {
+                    if ("Propietario".equalsIgnoreCase(persona.getDescripcion())) {
+                        propietarios.add(persona.getNombre() + " " + persona.getApellido() + " | " + persona.getTelefono() + " | " + persona.getEmail());
+                    } else if ("Arrendatario".equalsIgnoreCase(persona.getDescripcion())) {
+                        arrendatarios.add(persona.getNombre() + " " + persona.getApellido() + " | " + persona.getTelefono() + " | " + persona.getEmail());
+                    }
+                }
+
+                int numPropietarios = propietarios.size();
+                int numArrendatarios = arrendatarios.size();
+                int numVehiculos = vehiculos.size();
+                int max1 = Math.max(numPropietarios, numVehiculos);
+                int max2 = Math.max(max1, numArrendatarios);
+
+
+                if (vehiculos.isEmpty()) {
+                    for (int i = 0; i < max2; i++) {
+                        String propietario = i < numPropietarios ? propietarios.get(i) : null;
+                        String arrendatario = i < numArrendatarios ? arrendatarios.get(i) : null;
+                        String numerDepto = departamento.getNumeroDepto().toString();
+                        String letra = departamento.getLetra();
+                        if (currentDepartmentNumber != departamento.getNumeroDepto()) {
+                            rowDataList.add(new RowData(letra + " " + numerDepto, propietario, arrendatario, "", ""));
+                            currentDepartmentNumber = departamento.getNumeroDepto();
+                        } else {
+                            rowDataList.add(new RowData(null, propietario, arrendatario, "", ""));
+                        }
+                    }
+                } else {
+                    for (int i = 0; i < max2; i++) {
+                        String propietario = i < numPropietarios ? propietarios.get(i) : null;
+                        String arrendatario = i < numArrendatarios ? arrendatarios.get(i) : null;
+                        VehiculoModel vehiculo = i < numVehiculos ? vehiculos.get(i) : null;
+                        String numerDepto = departamento.getNumeroDepto().toString();
+                        String letra = departamento.getLetra();
+                        if (vehiculo == null) {
+                            if (currentDepartmentNumber != departamento.getNumeroDepto()) {
+                                rowDataList.add(new RowData(letra + " " + numerDepto, propietario, arrendatario, "", ""));
+                                currentDepartmentNumber = departamento.getNumeroDepto();
+                            } else {
+                                rowDataList.add(new RowData(null, propietario, arrendatario, "", ""));
+                            }
+                        } else {
+                            String vehiculoInfo = vehiculo.getMarca() + " | " + vehiculo.getModelo() + " | " + vehiculo.getColor();
+                            String estacionamiento = vehiculo.getEstacionamiento().toString();
+
+                            if (currentDepartmentNumber != departamento.getNumeroDepto()) {
+                                rowDataList.add(new RowData(letra + " " + numerDepto, propietario, arrendatario, vehiculoInfo, estacionamiento));
+                                currentDepartmentNumber = departamento.getNumeroDepto();
+                            } else {
+                                rowDataList.add(new RowData(null, propietario, arrendatario, vehiculoInfo, estacionamiento));
+                            }
                         }
                     }
                 }
             }
-
 
         }
     }

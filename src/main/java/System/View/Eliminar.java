@@ -387,14 +387,14 @@ public class Eliminar extends JFrame{
         eliminarTodoButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int option = JOptionPane.showConfirmDialog(null,"¿Seguro que desea eliminar todo el departamento?","Adevertencia",JOptionPane.OK_CANCEL_OPTION,
+                int option = JOptionPane.showConfirmDialog(null,"¿Seguro que desea eliminar todos los elementos del departamento?","Adevertencia",JOptionPane.OK_CANCEL_OPTION,
                         JOptionPane.WARNING_MESSAGE);
 
                 if (option == JOptionPane.OK_OPTION) {
                     Integer numeroDepto = Integer.parseInt(numeroDeDeptoTextField.getText());
                     String letra = letraTF.getText();
                     departamentoController.DeleteDepartamento(numeroDepto,letra);
-                    JOptionPane.showMessageDialog(Ventana,"Departamento Eliminado");
+                    JOptionPane.showMessageDialog(Ventana,"Departamento vaciado");
                     setVisible(false);
                     PantallaPrincipal pantallaPrincipal = new PantallaPrincipal(departamentoController);
                     pantallaPrincipal.setVisible(true);

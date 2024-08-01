@@ -1,9 +1,7 @@
 package System;
 import System.Controller.DepartamentoController;
 import System.Controller.LoginController;
-import System.Models.PasswordModel;
 import System.View.Login;
-import System.View.PantallaPrincipal;
 
 import javax.swing.*;
 

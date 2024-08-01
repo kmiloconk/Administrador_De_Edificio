@@ -45,7 +45,7 @@ public class PantallaPrincipal extends JFrame {
         setSize(1000, 500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
-        ImageIcon imageIcon = new ImageIcon("images/Logo.jpg");
+        ImageIcon imageIcon = new ImageIcon(PantallaPrincipal.class.getResource("/images/Logo.jpg"));
         Image image = imageIcon.getImage();
         Image newImage=image.getScaledInstance(60, 50, Image.SCALE_SMOOTH);
         ImageIcon imageIcon1 = new ImageIcon(newImage);

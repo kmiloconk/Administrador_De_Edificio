@@ -122,6 +122,7 @@ public class Editar extends JFrame{
     private JTextField numeroETF8;
     private JTextField numeroETF9;
     private JTextField letraTF;
+    private String descirpcion,descirpcion1,descirpcion2,descirpcion3,descirpcion4,descirpcion5,descirpcion6,descirpcion7,descirpcion8,descirpcion9;
 
     List<JPanel> personaPanels = Arrays.asList(personaPanel, personaPanel1, personaPanel2, personaPanel3, personaPanel4, personaPanel5, personaPanel6, personaPanel7, personaPanel8, personaPanel9);
     List<JTextField> nombrePTFs = Arrays.asList(nombrePTF, nombrePTF1, nombrePTF2, nombrePTF3, nombrePTF4, nombrePTF5, nombrePTF6, nombrePTF7, nombrePTF8, nombrePTF9);
@@ -137,6 +138,7 @@ public class Editar extends JFrame{
     List<JTextField> colorVTFs = Arrays.asList(colorVTF, colorVTF1, colorVTF2, colorVTF3, colorVTF4, colorVTF5, colorVTF6, colorVTF7, colorVTF8, colorVTF9);
 
     List<JTextField> numeroETFs = Arrays.asList(numeroETF, numeroETF1, numeroETF2, numeroETF3, numeroETF4, numeroETF5, numeroETF6, numeroETF7, numeroETF8, numeroETF9);
+    List<String> descripciones= Arrays.asList(descirpcion,descirpcion1,descirpcion2,descirpcion3,descirpcion4,descirpcion5,descirpcion6,descirpcion7,descirpcion8,descirpcion9);
     Integer personaCant=0,vehiculoCant =0;
     public Editar(DepartamentoController departamentoController){
         add(Ventana);
@@ -200,7 +202,7 @@ public class Editar extends JFrame{
                     }
 
 
-                    String nombre, apellido, descripcion, marca, modelo, color;
+                    String nombre, apellido, email, marca, modelo, color,descrip;
                     Integer telefono, estacionamiento;
                     List<PersonaModel> newPersonas = new ArrayList<>();
 
@@ -208,7 +210,8 @@ public class Editar extends JFrame{
                         nombre = nombrePTFs.get(i).getText();
                         apellido = apellidoPTFs.get(i).getText();
                         String telefonoStr = telefonoPTFs.get(i).getText();
-                        descripcion = descripPTFs.get(i).getText();
+                        email = descripPTFs.get(i).getText();
+                        descrip= descripciones.get(i);
 
 
 
@@ -218,7 +221,7 @@ public class Editar extends JFrame{
                         }
 
                         telefono = Integer.parseInt(telefonoStr);
-                        PersonaModel persona = new PersonaModel(nombre, apellido, telefono, descripcion,"Arrendatario");
+                        PersonaModel persona = new PersonaModel(nombre, apellido, telefono, email,descrip);
                         newPersonas.add(persona);
                     }
                     departamentoController.UpdatePersona(newPersonas, numero,letra);
@@ -294,6 +297,7 @@ public class Editar extends JFrame{
                         apellidoPTFs.get(personaCant).setText(persona.getApellido());
                         telefonoPTFs.get(personaCant).setText(persona.getTelefono().toString());
                         descripPTFs.get(personaCant).setText(persona.getEmail());
+                        descripciones.set(personaCant,persona.getDescripcion());
                     }
                     personaCant++;
                 }
